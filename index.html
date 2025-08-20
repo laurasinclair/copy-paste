@@ -11,55 +11,48 @@
 	</head>
 	<body>
 		<div id="app">
-			<p class="copy1">
+			<p data-copy="1">
 				Try copying that text. I doubledare you.
 			</p>
-			<p class="copy2">
+			<p data-copy="2">
 				Or this one.
 			</p>
-			<p class="copy3">
+			<p data-copy="3">
 				Or even this one.
 			</p>
 		</div>
 
 		<script>
 			window.onload = function () {
-				const copy1 = document.getElementsByClassName("copy1");
-				if (!copy1) return;
+				const copyHandlers = [
+					{
+						dataAttr: "1",
+						transform: () => "Told ya!",
+					},
+					{
+						dataAttr: "2",
+						transform: (text) => text.toUpperCase(),
+					},
+					{
+						dataAttr: "3",
+						transform: (text) => `🦛🦛🦛 ${text} 🦛🦛🦛`,
+					},
+				];
 
-				[...copy1].forEach((el) => {
-					el.addEventListener("copy", function (e) {
-						e.preventDefault();
-						if (!e.clipboardData) return;
-						e.clipboardData.setData("text/plain", "Told ya!");
+				copyHandlers.forEach(({ dataAttr, transform }) => {
+					const elements = document.querySelectorAll(`[data-copy="${dataAttr}"]`);
+					if (!elements) return;
+
+					elements.forEach((el) => {
+						el.addEventListener("copy", function (e) {
+							e.preventDefault();
+							if (!e.clipboardData) return;
+
+							const selectedText = window.getSelection().toString();
+							e.clipboardData.setData("text/plain", transform(selectedText));
+						});
 					});
-				})
-
-				const copy2 = document.getElementsByClassName("copy2");
-				if (!copy2) return;
-
-				[...copy2].forEach((el) => {
-					el.addEventListener("copy", function (e) {
-						e.preventDefault();
-						if (!e.clipboardData) return;
-					
-    					const text = window.getSelection().toString().toUpperCase();
-    					e.clipboardData.setData("text/plain", text);
-					});
-				})
-
-				const copy3 = document.getElementsByClassName("copy3");
-				if (!copy3) return;
-
-				[...copy3].forEach((el) => {
-					el.addEventListener("copy", function (e) {
-						e.preventDefault();
-						if (!e.clipboardData) return;
-						
-						const text = window.getSelection().toString()
-						e.clipboardData.setData("text/plain", `🦛🦛🦛 ${text} 🦛🦛🦛`);
-					});
-				})
+				});
 			};
 		</script>
 	</body>
