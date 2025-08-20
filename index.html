@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Copying and pasting things</title>
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+	</head>
+	<body>
+		<div id="app">
+			<p class="copy1">
+				Try copying that text. I doubledare you.
+			</p>
+			<p class="copy2">
+				Or this one.
+			</p>
+			<p class="copy3">
+				Or even this one.
+			</p>
+		</div>
+
+		<script>
+			window.onload = function () {
+				const copy1 = document.getElementsByClassName("copy1");
+				if (!copy1) return;
+
+				[...copy1].forEach((el) => {
+					el.addEventListener("copy", function (e) {
+						e.preventDefault();
+						if (!e.clipboardData) return;
+						e.clipboardData.setData("text/plain", "Told ya!");
+					});
+				})
+
+				const copy2 = document.getElementsByClassName("copy2");
+				if (!copy2) return;
+
+				[...copy2].forEach((el) => {
+					el.addEventListener("copy", function (e) {
+						e.preventDefault();
+						if (!e.clipboardData) return;
+					
+    					const text = window.getSelection().toString().toUpperCase();
+    					e.clipboardData.setData("text/plain", text);
+					});
+				})
+
+				const copy3 = document.getElementsByClassName("copy3");
+				if (!copy3) return;
+
+				[...copy3].forEach((el) => {
+					el.addEventListener("copy", function (e) {
+						e.preventDefault();
+						if (!e.clipboardData) return;
+						
+						const text = window.getSelection().toString()
+						e.clipboardData.setData("text/plain", `🦛🦛🦛 ${text} 🦛🦛🦛`);
+					});
+				})
+			};
+		</script>
+	</body>
+</html>
