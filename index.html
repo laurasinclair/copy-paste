@@ -21,7 +21,6 @@
 				Or even this one.
 			</p>
 		</div>
-
 		<script>
 			window.onload = function () {
 				const copyHandlers = [
@@ -36,21 +35,20 @@
 					{
 						dataAttr: "3",
 						transform: (text) => `🦛🦛🦛 ${text} 🦛🦛🦛`,
-					},
+					}
 				];
 
 				copyHandlers.forEach(({ dataAttr, transform }) => {
-					const elements = document.querySelectorAll(`[data-copy="${dataAttr}"]`);
-					if (!elements) return;
+					const el = document.querySelector(`[data-copy="${dataAttr}"]`);
+					if (!el) return;
 
-					elements.forEach((el) => {
-						el.addEventListener("copy", function (e) {
-							e.preventDefault();
-							if (!e.clipboardData) return;
+					el.addEventListener("copy", (e) => {
+						e.preventDefault();
 
-							const selectedText = window.getSelection().toString();
-							e.clipboardData.setData("text/plain", transform(selectedText));
-						});
+						if (!e.clipboardData) return;
+
+						const selectedText = window.getSelection().toString();
+						e.clipboardData.setData("text/plain", transform(selectedText));
 					});
 				});
 			};
